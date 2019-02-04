@@ -14,10 +14,24 @@ Usage
 
 Syntax: `minigsf [Base name] [Offset] [Size] [Count]`
 
-### Options ###
+or
+
+Syntax: `minigsf [Base name] [Offset] =[Hex pattern] [Count]`
+
+### Options
 
 `--help`
   : Show help
 
 `--psfby`, `--gsfby` [name]
   : Set creator name of GSF
+
+### Examples
+
+```bash
+minigsf AGB-SMPL-USA 0x80cafe8 1 64
+```
+
+```bash
+minigsf AGB-SMPL-USA 0x80cafe8 =NNNNNNNNDEADBEEF 64
+```
