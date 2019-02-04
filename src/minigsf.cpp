@@ -149,8 +149,8 @@ int main(int argc, char *argv[])
 	memset(exe, 0, GSF_EXE_HEADER_SIZE + 256);
 
 	off_t offset_of_num = 0;
-  size_t size_of_num = 0;
-  size_t romsize = 0;
+	size_t size_of_num = 0;
+	size_t romsize = 0;
 	if (argv[argi + 2][0] == '=') {
 		std::string hexstring(&argv[argi + 2][1]);
 
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 		entrypoint = 0x8000000;
 	writeInt(&exe[0], entrypoint);
 	writeInt(&exe[4], load_offset);
-	writeInt(&exe[8], romsize);
+	writeInt(&exe[8], (uint32_t)romsize);
 
 	int num_error = 0;
 	for (uint32_t num = 0; num < count; num++) {
@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		if (exe2gsf(gsf_path, exe, GSF_EXE_HEADER_SIZE + romsize, tags)) {
+		if (exe2gsf(gsf_path, exe, GSF_EXE_HEADER_SIZE + (uint32_t)romsize, tags)) {
 			printf("Created %s\n", gsf_path);
 		}
 		else {
