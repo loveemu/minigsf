@@ -1,6 +1,6 @@
 MINIGSF: Numbered minigsf creation utility
 ==========================================
-[![Travis Build Status](https://travis-ci.org/loveemu/minigsf.svg?branch=master)](https://travis-ci.org/loveemu/minigsf) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/3cxvg47uq96u2ffr/branch/master?svg=true)](https://ci.appveyor.com/project/loveemu/minigsf/branch/master)
+[![Travis Build Status](https://travis-ci.org/loveemu/minigsf.svg?branch=master)](https://travis-ci.org/loveemu/minigsf) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/2cd81xqyxb37pp9g/branch/master?svg=true)](https://ci.appveyor.com/project/loveemu/minigsf/branch/master)
 
 Numbered minigsf creation utility, where the offset is known.
 
