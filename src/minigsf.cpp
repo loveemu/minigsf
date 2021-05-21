@@ -80,7 +80,7 @@ static void usage(const char * progname)
 	printf("  : Set creator name of GSF\n");
 	printf("\n");
 	printf("`-o` [basename]\n");
-	printf("  : Basename of minigsf (without extension)\n");
+	printf("  : Specify minigsf filename (without extension)\n");
 	printf("\n");
 }
 

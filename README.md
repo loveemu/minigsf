@@ -26,6 +26,9 @@ Syntax: `minigsf [Base name] [Offset] =[Hex pattern] (Count)`
 `--psfby`, `--gsfby` [name]
   : Set creator name of GSF
 
+`-o` [basename]
+  : Specify minigsf filename (without extension)
+
 ### Examples
 
 ```bash
