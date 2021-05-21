@@ -30,7 +30,7 @@
 #endif
 
 #define APP_NAME    "minigsf"
-#define APP_VER     "[2019-02-04]"
+#define APP_VER     "[2021-05-21]"
 #define APP_URL     "http://github.com/loveemu/minigsf"
 
 #define GSF_PSF_VERSION         0x22
@@ -64,11 +64,11 @@ static void usage(const char * progname)
 	printf("Usage\n");
 	printf("-----\n");
 	printf("\n");
-	printf("Syntax: `%s (options) [Base name] [Offset] [Size] [Count]`\n", progname);
+	printf("Syntax: `%s (options) [Base name] [Offset] [Size] (Count)`\n", progname);
 	printf("\n");
 	printf("or\n");
 	printf("\n");
-	printf("Syntax: `%s (options) [Base name] [Offset] =[Hex pattern] [Count]`\n", progname);
+	printf("Syntax: `%s (options) [Base name] [Offset] =[Hex pattern] (Count)`\n", progname);
 	printf("\n");
 
 	printf("### Options\n");
@@ -78,6 +78,9 @@ static void usage(const char * progname)
 	printf("\n");
 	printf("`--psfby`, `--gsfby` [name]\n");
 	printf("  : Set creator name of GSF\n");
+	printf("\n");
+	printf("`-o` [basename]\n");
+	printf("  : Basename of minigsf (without extension)\n");
 	printf("\n");
 }
 
@@ -92,6 +95,8 @@ int main(int argc, char *argv[])
 	char *endptr = NULL;
 
 	char *psfby = NULL;
+
+	char *outname = NULL;
 
 	int argi = 1;
 	while (argi < argc && argv[argi][0] == '-') {
@@ -108,6 +113,15 @@ int main(int argc, char *argv[])
 			psfby = argv[argi + 1];
 			argi++;
 		}
+		else if (strcmp(argv[argi], "-o") == 0) {
+			if (argi + 1 >= argc) {
+				fprintf(stderr, "Error: Too few arguments for \"%s\"\n", argv[argi]);
+				return EXIT_FAILURE;
+			}
+
+			outname = argv[argi + 1];
+			argi++;
+		}
 		else {
 			fprintf(stderr, "Error: Unknown option \"%s\"\n", argv[argi]);
 			return EXIT_FAILURE;
@@ -116,12 +130,13 @@ int main(int argc, char *argv[])
 	}
 
 	int argnum = argc - argi;
-	if (argnum != 4) {
+	if (argnum < 3 || argnum > 4) {
 		fprintf(stderr, "Error: Too few/more arguments\n");
 		return EXIT_FAILURE;
 	}
 
 	char * gsf_basename = argv[argi];
+	if (outname == NULL) outname = gsf_basename;
 
 	char libname[PATH_MAX];
 	sprintf(libname, "%s.gsflib", gsf_basename);
@@ -138,12 +153,16 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	longval = strtol(argv[argi + 3], &endptr, 10);
-	if (*endptr != '\0' || errno == ERANGE || longval < 0) {
-		fprintf(stderr, "Error: Number format error \"%s\"\n", argv[argi + 3]);
-		return EXIT_FAILURE;
+	uint32_t count = 1;
+	if (argnum >= 4)
+	{
+		longval = strtol(argv[argi + 3], &endptr, 10);
+		if (*endptr != '\0' || errno == ERANGE || longval < 0) {
+			fprintf(stderr, "Error: Number format error \"%s\"\n", argv[argi + 3]);
+			return EXIT_FAILURE;
+		}
+		count = (uint32_t)longval;
 	}
-	uint32_t count = (uint32_t)longval;
 
 	uint8_t exe[GSF_EXE_HEADER_SIZE + 256];
 	memset(exe, 0, GSF_EXE_HEADER_SIZE + 256);
@@ -226,7 +245,10 @@ int main(int argc, char *argv[])
 		}
 
 		char gsf_path[PATH_MAX];
-		sprintf(gsf_path, "%s-%04d.minigsf", gsf_basename, num);
+		if (count != 1)
+			sprintf(gsf_path, "%s-%04d.minigsf", outname, num);
+		else
+			sprintf(gsf_path, "%s.minigsf", outname);
 
 		// patch exe
 		if (offset_of_num >= 0) {

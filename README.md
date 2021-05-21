@@ -12,11 +12,11 @@ Downloads
 Usage
 -----
 
-Syntax: `minigsf [Base name] [Offset] [Size] [Count]`
+Syntax: `minigsf [Base name] [Offset] [Size] (Count)`
 
 or
 
-Syntax: `minigsf [Base name] [Offset] =[Hex pattern] [Count]`
+Syntax: `minigsf [Base name] [Offset] =[Hex pattern] (Count)`
 
 ### Options
 
@@ -34,4 +34,8 @@ minigsf AGB-SMPL-USA 0x80cafe8 1 64
 
 ```bash
 minigsf AGB-SMPL-USA 0x80cafe8 =NNNNNNNNDEADBEEF 64
+```
+
+```bash
+minigsf -o songtitle AGB-SMPL-USA 0x80cafe8 =00FACE08
 ```
